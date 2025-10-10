@@ -79,20 +79,11 @@ async function buildRegistryJsonFile() {
     path.join(process.cwd(), `registry.json`),
     JSON.stringify(fixedRegistry, null, 2),
   );
-
-  // 3. Copy the registry.json to the public/r/styles/default directory.
-  await fs.cp(
-    path.join(process.cwd(), "registry.json"),
-    path.join(process.cwd(), "public/r/styles/default/registry.json"),
-    { recursive: true },
-  );
 }
 
 async function buildRegistry() {
   return new Promise((resolve, reject) => {
-    const process = exec(
-      `pnpm exec shadcn build registry.json --output public/r/styles/default`,
-    );
+    const process = exec(`pnpm exec shadcn build registry.json`);
 
     process.on("exit", (code) => {
       if (code === 0) {
