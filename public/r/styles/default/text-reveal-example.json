@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "text-reveal-example",
+  "type": "registry:component",
+  "registryDependencies": [
+    "text-reveal"
+  ],
+  "files": [
+    {
+      "path": "src/registry/default/example/text-reveal-example.tsx",
+      "content": "import { TextReveal } from \"@/registry/default/ui/text-reveal\";\n\nexport default function TextRevealExample() {\n  return (\n    <div className=\"w-full px-8 py-10 md:py-20 lg:py-80\">\n      <TextReveal\n        start=\"25%\"\n        className=\"text-center font-medium text-md leading-[1.3] sm:text-2xl lg:text-3xl\"\n        text=\"Build enchanting, interactive interfaces that mesmerize users and elevate the digital experience with the power of Mahou\"\n      />\n    </div>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

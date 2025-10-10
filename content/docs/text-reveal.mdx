@@ -1,0 +1,35 @@
+---
+title: Text reveal
+description: A scroll driven text reveal
+---
+
+## Preview
+
+<ComponentDisplay name="text-reveal-example"/>
+
+## Installation
+
+### CLI
+<ComponentInstall name="text-reveal" />
+
+### Usage
+```tsx
+import { TextReveal } from "@/components/ui/text-reveal"
+```
+
+
+```tsx
+<TextReveal
+  text="Build enchanting interfaces with Mahou"
+  className="[--color-accent:var(--color-primary)]" />
+```
+
+
+## Props
+| Prop                | Type     | Default | Description                                     |
+| ------------------- | -------- | ------- | ----------------------------------------------- |
+| `text`              | `string` | `-`     | The text to be revealed                         |
+| `start`             | `string` | `10%`   | The entry position of the animation             |
+| `offset`            | `number` | `10`    | The animations characters offset                |
+| `offsetMultiplier`  | `number` | `1.1`   | The offset multiplier                           |
+| `className`         | `string` | `-`     | The class name to be applied to the component   |

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "text-reveal",
+  "type": "registry:ui",
+  "files": [
+    {
+      "path": "src/registry/default/ui/text-reveal.tsx",
+      "content": "import clsx from \"clsx\";\nimport type React from \"react\";\n\ninterface TextRevealProps {\n  text: string; // content to reveal\n  baseOpacity?: number | string;\n  start?: string;\n  offset?: number;\n  offsetMultiplier?: number;\n  className?: string;\n}\n\nexport function TextReveal({\n  text,\n  baseOpacity = 0.1,\n  className = \"\",\n  start = \"10%\",\n  offset = 10,\n  offsetMultiplier = 1.1,\n}: TextRevealProps) {\n  const chars = text.trim().split(\"\");\n\n  return (\n    <div\n      style={\n        {\n          \"--_chars\": chars.length,\n          \"--base\": baseOpacity,\n          \"--start\": start,\n          \"--offset\": offset,\n          \"--offset-multiplier\": offsetMultiplier,\n        } as React.CSSProperties\n      }\n      className={clsx(\"text-reveal\", className)}\n    >\n      {chars.map((char, idx) => (\n        <span\n          // biome-ignore lint/suspicious/noArrayIndexKey: this will not change order\n          key={char + idx}\n          className=\"char\"\n          style={{ \"--idx\": idx } as React.CSSProperties}\n        >\n          {char}\n        </span>\n      ))}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    "@keyframes activate": {
+      "0%": {
+        "opacity": "var(--base, 0.1)",
+        "color": "inherit"
+      },
+      "50%": {
+        "color": "var(--color-accent)",
+        "opacity": "1"
+      },
+      "100%": {
+        "color": "inherit",
+        "opacity": "1"
+      }
+    },
+    "@layer components": {
+      "@supports (animation-timeline: scroll())": {
+        ".text-reveal > .char": {
+          "animation": "activate both linear 1ms",
+          "animation-timeline": "scroll(block nearest)",
+          "animation-range": "entry calc(var(--start) * ((var(--idx) + 1) / (var(--_chars) + 1))) entry calc(var(--start) * ((var(--idx) * var(--offset-multiplier) + var(--offset)) / (var(--_chars) + 1)))",
+          "opacity": "var(--base)"
+        },
+        "@supports not (animation-timeline: scroll())": {
+          ".text-reveal > .char": {
+            "opacity": "1",
+            "color": "inherit"
+          }
+        }
+      }
+    }
+  }
+}
