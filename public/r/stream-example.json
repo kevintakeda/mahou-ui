@@ -8,7 +8,7 @@
   "files": [
     {
       "path": "src/registry/default/example/stream-example.tsx",
-      "content": "import { useRef } from \"react\";\nimport { Stream } from \"../ui/stream\";\n\nexport default function StreamExample() {\n  const containerRef = useRef<HTMLDivElement>(null);\n  const div1Ref = useRef<HTMLDivElement>(null);\n  const div4Ref = useRef<HTMLDivElement>(null);\n\n  return (\n    <div ref={containerRef} className=\"relative w-full h-full\">\n      <div ref={div1Ref}>Source</div>\n      <div ref={div4Ref}>Target</div>\n\n      <Stream\n        containerRef={containerRef}\n        fromRef={div1Ref}\n        toRef={div4Ref}\n        endYOffset={-10}\n        stroke=\"rgb(59, 130, 246)\"\n        strokeWidth={2}\n      />\n    </div>\n  );\n}\n",
+      "content": "\"use client\";\n\nimport { Stream } from \"../ui/stream\";\n\nexport default function StreamExample() {\n  return (\n    <div className=\"h-full w-full\">\n      <Stream\n        points={[\n          [50, 0],\n          [200, 200],\n          [300, 250],\n          [500, 600],\n        ]}\n        width={600}\n        height={600}\n        animationDuration={2}\n        className=\"h-[600px] w-full\"\n      />\n    </div>\n  );\n}\n",
       "type": "registry:component"
     }
   ]
