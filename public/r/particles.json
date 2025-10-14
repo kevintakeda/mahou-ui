@@ -1,0 +1,12 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "particles",
+  "type": "registry:ui",
+  "files": [
+    {
+      "path": "src/registry/default/ui/particles.tsx",
+      "content": "export default function Particles() {\n  return <div>Particles</div>;\n}\n",
+      "type": "registry:ui"
+    }
+  ]
+}

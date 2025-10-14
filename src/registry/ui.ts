@@ -44,4 +44,25 @@ export const ui: Registry["items"] = [
       },
     },
   },
+  {
+    name: "grid-particles",
+    type: "registry:ui",
+    dependencies: ["pixi.js", "@pixi/react"],
+    files: [
+      {
+        path: "src/registry/default/ui/grid-particles.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
+  {
+    name: "stream",
+    type: "registry:ui",
+    files: [
+      {
+        path: "src/registry/default/ui/stream.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
 ];

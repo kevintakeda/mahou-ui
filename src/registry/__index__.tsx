@@ -29,6 +29,54 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
+  "grid-particles": {
+    name: "grid-particles",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: undefined,
+    files: [
+      {
+        path: "src/registry/default/ui/grid-particles.tsx",
+        type: "registry:ui",
+        target: "",
+      },
+    ],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/ui/grid-particles.tsx");
+      const exportName =
+        Object.keys(mod).find(
+          (key) =>
+            typeof mod[key] === "function" || typeof mod[key] === "object",
+        ) || item.name;
+      return { default: mod.default || mod[exportName] };
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  stream: {
+    name: "stream",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: undefined,
+    files: [
+      {
+        path: "src/registry/default/ui/stream.tsx",
+        type: "registry:ui",
+        target: "",
+      },
+    ],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/ui/stream.tsx");
+      const exportName =
+        Object.keys(mod).find(
+          (key) =>
+            typeof mod[key] === "function" || typeof mod[key] === "object",
+        ) || item.name;
+      return { default: mod.default || mod[exportName] };
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "text-reveal-example": {
     name: "text-reveal-example",
     description: "",
@@ -45,6 +93,56 @@ export const Index: Record<string, any> = {
       const mod = await import(
         "@/registry/default/example/text-reveal-example.tsx"
       );
+      const exportName =
+        Object.keys(mod).find(
+          (key) =>
+            typeof mod[key] === "function" || typeof mod[key] === "object",
+        ) || item.name;
+      return { default: mod.default || mod[exportName] };
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "grid-particles-example": {
+    name: "grid-particles-example",
+    description: "",
+    type: "registry:component",
+    registryDependencies: ["grid-particles"],
+    files: [
+      {
+        path: "src/registry/default/example/grid-particles-example.tsx",
+        type: "registry:component",
+        target: "",
+      },
+    ],
+    component: React.lazy(async () => {
+      const mod = await import(
+        "@/registry/default/example/grid-particles-example.tsx"
+      );
+      const exportName =
+        Object.keys(mod).find(
+          (key) =>
+            typeof mod[key] === "function" || typeof mod[key] === "object",
+        ) || item.name;
+      return { default: mod.default || mod[exportName] };
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "stream-example": {
+    name: "stream-example",
+    description: "",
+    type: "registry:component",
+    registryDependencies: ["stream"],
+    files: [
+      {
+        path: "src/registry/default/example/stream-example.tsx",
+        type: "registry:component",
+        target: "",
+      },
+    ],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/example/stream-example.tsx");
       const exportName =
         Object.keys(mod).find(
           (key) =>

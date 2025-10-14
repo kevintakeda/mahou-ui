@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hud-example",
+  "type": "registry:component",
+  "registryDependencies": [
+    "hud"
+  ],
+  "files": [
+    {
+      "path": "src/registry/default/example/hud-example.tsx",
+      "content": "\"use client\";\n\nimport { HUD, HUDDotGrid, HUDLine, HUDLineGrid } from \"../ui/hud\";\n\nexport default function HUDExample() {\n  return (\n    <HUD className=\"h-[600px] w-[600px]\">\n      <HUDDotGrid />\n      <HUDLineGrid />\n      <HUDLine />\n    </HUD>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

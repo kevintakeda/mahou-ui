@@ -14,6 +14,8 @@
     "registry:build": "node --experimental-transform-types ./src/scripts/build-registry.mts && biome format --write ./src/registry/__index__.tsx"
   },
   "dependencies": {
+    "@pixi/filter-glow": "^5.2.1",
+    "@pixi/react": "^8.0.3",
     "@radix-ui/react-tabs": "^1.1.13",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -22,11 +24,14 @@
     "fumadocs-ui": "15.8.3",
     "lucide-react": "^0.544.0",
     "next": "15.5.4",
+    "next-themes": "^0.4.6",
+    "pixi.js": "^8.14.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-use": "^17.6.0",
-    "shadcn": "^3.3.1",
+    "shadcn": "^3.4.0",
     "shiki": "^3.13.0",
+    "simplex-noise": "^4.0.3",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
@@ -34,10 +39,10 @@
     "@tailwindcss/postcss": "^4.1.14",
     "@types/mdx": "^2.0.13",
     "@types/node": "24.6.2",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.3",
+    "lint-staged": "^16.2.4",
     "postcss": "^8.5.6",
     "rimraf": "^6.0.1",
     "tailwindcss": "^4.1.14",
