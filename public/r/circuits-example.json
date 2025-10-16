@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "circuits-example",
+  "type": "registry:component",
+  "registryDependencies": [
+    "circuits"
+  ],
+  "files": [
+    {
+      "path": "src/registry/default/example/circuits-example.tsx",
+      "content": "\"use client\";\n\nimport { Application } from \"@pixi/react\";\nimport { useEffect, useRef, useState } from \"react\";\nimport { Circuits } from \"../ui/circuits\";\n\nexport default function StreamExample() {\n  const ref = useRef<HTMLDivElement>(null);\n  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });\n\n  useEffect(() => {\n    if (!ref.current) return;\n\n    const resizeObserver = new ResizeObserver((entries) => {\n      for (const entry of entries) {\n        const { width, height } = entry.contentRect;\n        setDimensions({ width, height });\n      }\n    });\n\n    resizeObserver.observe(ref.current);\n\n    return () => {\n      resizeObserver.disconnect();\n    };\n  }, []);\n\n  return (\n    <div ref={ref} className={\"h-[600px] w-full\"}>\n      <Application\n        antialias\n        autoDensity\n        autoStart\n        sharedTicker\n        resizeTo={ref}\n        preference=\"webgpu\"\n        backgroundAlpha={0}\n        width={dimensions.width}\n        height={dimensions.height}\n      >\n        <Circuits />\n      </Application>\n    </div>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

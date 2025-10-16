@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "circuits",
+  "type": "registry:ui",
+  "dependencies": [
+    "pixi.js",
+    "@pixi/react"
+  ],
+  "files": [
+    {
+      "path": "src/registry/default/ui/circuits.tsx",
+      "content": "\"use client\";\nimport { useExtend, useTick } from \"@pixi/react\";\nimport { Color, Container, FillGradient, Graphics, Sprite } from \"pixi.js\";\nimport { useCallback, useEffect, useMemo, useRef } from \"react\";\n\nexport function Circuits({ speed = 100 }) {\n  useExtend({ Container, Sprite, Graphics });\n\n  const maskRef = useRef<Graphics>(null);\n  const gradientRef = useRef<Graphics>(null);\n\n  const drawMask = useCallback((g: Graphics) => {\n    g.clear();\n    const config = {\n      numPaths: 8,\n      stepY: 16,\n      stepX: 16,\n      stepJitterMax: 128,\n      stepJitterMin: 64,\n      steps: 10,\n    };\n\n    const optimalGap = config.stepX + config.stepX;\n\n    for (let i = 0; i < config.numPaths; i++) {\n      let x = 200 + optimalGap * i,\n        y = 50;\n\n      g.moveTo(x, y);\n      let dir = Math.random() > 0.5 ? 1 : -1;\n      let alt = -1;\n\n      for (let j = 0; j < config.steps; j++) {\n        if (alt === -1) {\n          alt = 1;\n          y +=\n            config.stepY +\n            Math.random() * config.stepJitterMax +\n            config.stepJitterMin;\n          g.lineTo(x, y);\n        } else {\n          alt = -1;\n          dir *= -1;\n          x = x + config.stepX * dir;\n          y = y + config.stepY;\n          g.lineTo(x, y);\n        }\n      }\n    }\n    g.stroke({ color: 0x00ff00, width: 1, pixelLine: true });\n  }, []);\n\n  // Pre-create gradient outside of draw function\n  const gradient = useMemo(\n    () =>\n      new FillGradient({\n        end: { x: 0, y: 1 },\n        colorStops: [\n          { offset: 0, color: new Color(0xffffff).setAlpha(0) },\n          { offset: 1, color: 0x00ff00 },\n        ],\n      }),\n    [],\n  );\n\n  const drawGradient = useCallback(\n    (g: Graphics) => {\n      g.clear();\n      g.rect(0, 0, 800, 300);\n      g.fill(gradient);\n    },\n    [gradient],\n  );\n\n  // Combine mask setup and animation logic\n  useEffect(() => {\n    if (maskRef.current && gradientRef.current) {\n      gradientRef.current.mask = maskRef.current;\n    }\n  }, []);\n\n  // Use deltaTime directly without extra multiplication\n  useTick((ticker) => {\n    if (gradientRef.current) {\n      if (gradientRef.current.y >= 600) {\n        gradientRef.current.y = -300;\n      } else {\n        gradientRef.current.y += speed * ticker.deltaTime * 0.1;\n      }\n    }\n  });\n\n  return (\n    <pixiContainer>\n      <pixiGraphics ref={maskRef} draw={drawMask} />\n      <pixiGraphics ref={gradientRef} draw={drawGradient} />\n    </pixiContainer>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ]
+}

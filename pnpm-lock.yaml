@@ -65,6 +65,9 @@ importers:
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
+      tempus:
+        specifier: 1.0.0-dev.15
+        version: 1.0.0-dev.15(react@19.2.0)
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.2.5
@@ -3213,6 +3216,14 @@ packages:
   tar@7.5.1:
     resolution: {integrity: sha512-nlGpxf+hv0v7GkWBK2V9spgactGOp0qvfWRxUMjqHyzrt3SgwE48DIv/FhqPHJYLHpgW1opq3nERbz5Anq7n1g==}
     engines: {node: '>=18'}
+
+  tempus@1.0.0-dev.15:
+    resolution: {integrity: sha512-D03RLYrfEuvbJn7fPxPFtQ1zq1AEAcUc06DMS6xceDzTje5MXOBdhxkYS3f6BiUg2b3m/HUPqWsOiEpHfRvRUw==}
+    peerDependencies:
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   throttle-debounce@3.0.1:
     resolution: {integrity: sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==}
@@ -6915,6 +6926,10 @@ snapshots:
       minipass: 7.1.2
       minizlib: 3.1.0
       yallist: 5.0.0
+
+  tempus@1.0.0-dev.15(react@19.2.0):
+    optionalDependencies:
+      react: 19.2.0
 
   throttle-debounce@3.0.1: {}
 

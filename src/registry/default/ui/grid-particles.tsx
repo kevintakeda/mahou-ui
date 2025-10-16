@@ -8,7 +8,7 @@ import {
   type Texture,
   type TickerCallback,
 } from "pixi.js";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { createNoise2D } from "simplex-noise";
 
 export interface RectDefinition {
@@ -45,6 +45,7 @@ export interface GridParticlesProps {
     | "left-to-right"
     | "right-to-left"
     | "center-outward";
+  randomFn?: () => number;
 }
 
 function pointInRect(
@@ -116,10 +117,11 @@ export function GridParticles({
   masks = [],
   fitToContainer = true,
   mode = "random",
+  randomFn = Math.random,
 }: GridParticlesProps) {
   useExtend({ Container, Sprite, Graphics });
   const { app, isInitialised } = useApplication();
-  const [time, setTime] = useState(0);
+  const timeRef = useRef(0);
   const containerRef = useRef<Container>(null);
   const prevTextureRef = useRef<Texture>(null);
 
@@ -135,7 +137,7 @@ export function GridParticles({
     return texture;
   }, [isInitialised, color, size, app]);
 
-  const noise2D = useMemo(() => createNoise2D(Math.random), []);
+  const noise2D = useMemo(() => createNoise2D(randomFn), [randomFn]);
 
   const points = useMemo(() => {
     if (!isInitialised) return [];
@@ -206,7 +208,7 @@ export function GridParticles({
           phase = Math.random() * Math.PI * 2;
         }
         if (isPointInShapes(point, masks)) {
-          arr.push({ ...point, phase, speed });
+          arr.push({ ...point, phase, speed, ref: null as Sprite | null });
         }
       }
     }
@@ -229,9 +231,22 @@ export function GridParticles({
   ]);
 
   const animate = useCallback<TickerCallback<unknown>>(
-    (delta) => setTime((t) => t + delta.elapsedMS),
-    [],
+    (ticker) => {
+      timeRef.current += ticker.deltaTime;
+      const time = timeRef.current;
+
+      points.forEach((point) => {
+        if (point.ref) {
+          const alpha =
+            minAlpha +
+            maxAlpha * (Math.sin(time * point.speed + point.phase) * 0.5 + 0.5);
+          point.ref.alpha = alpha;
+        }
+      });
+    },
+    [points, minAlpha, maxAlpha],
   );
+
   useTick(animate);
 
   if (!isInitialised || !dotTexture) return null;
@@ -239,18 +254,20 @@ export function GridParticles({
   return (
     <pixiContainer ref={containerRef}>
       {points.map((point) => {
-        const alpha =
-          minAlpha +
-          maxAlpha * (Math.sin(time * point.speed + point.phase) * 0.5 + 0.5);
+        const initialAlpha =
+          minAlpha + maxAlpha * (Math.sin(point.phase) * 0.5 + 0.5);
         return (
           <pixiSprite
+            ref={(el) => {
+              point.ref = el;
+            }}
             key={point.id}
             texture={dotTexture}
             x={point.x}
             y={point.y}
             anchor={0.5}
             tint={color}
-            alpha={alpha}
+            alpha={initialAlpha}
           />
         );
       })}

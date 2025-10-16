@@ -47,7 +47,7 @@ export const ui: Registry["items"] = [
   {
     name: "grid-particles",
     type: "registry:ui",
-    dependencies: ["pixi.js", "@pixi/react"],
+    dependencies: ["pixi.js", "@pixi/react", "simplex-noise"],
     files: [
       {
         path: "src/registry/default/ui/grid-particles.tsx",
@@ -56,11 +56,12 @@ export const ui: Registry["items"] = [
     ],
   },
   {
-    name: "stream",
+    name: "circuits",
     type: "registry:ui",
+    dependencies: ["pixi.js", "@pixi/react"],
     files: [
       {
-        path: "src/registry/default/ui/stream.tsx",
+        path: "src/registry/default/ui/circuits.tsx",
         type: "registry:ui",
       },
     ],

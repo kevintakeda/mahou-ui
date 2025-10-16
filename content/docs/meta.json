@@ -3,5 +3,5 @@
   "description": "The official content source",
   "icon": "Pencil",
   "root": true,
-  "pages": ["---UI---", "text-reveal", "grid-particles", "stream"]
+  "pages": ["---UI---", "text-reveal", "grid-particles", "circuits"]
 }

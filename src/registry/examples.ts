@@ -24,12 +24,12 @@ export const examples: Registry["items"] = [
     ],
   },
   {
-    name: "stream-example",
+    name: "circuits-example",
     type: "registry:component",
-    registryDependencies: ["stream"],
+    registryDependencies: ["circuits"],
     files: [
       {
-        path: "src/registry/default/example/stream-example.tsx",
+        path: "src/registry/default/example/circuits-example.tsx",
         type: "registry:component",
       },
     ],
