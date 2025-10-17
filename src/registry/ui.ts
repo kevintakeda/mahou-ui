@@ -58,7 +58,7 @@ export const ui: Registry["items"] = [
   {
     name: "circuits",
     type: "registry:ui",
-    dependencies: ["pixi.js", "@pixi/react"],
+    dependencies: ["pixi.js", "@pixi/react", "pixi-filters"],
     files: [
       {
         path: "src/registry/default/ui/circuits.tsx",

@@ -2,7 +2,6 @@
 
 import { Application } from "@pixi/react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
 import {
   GridParticles,
   type ShapeDefinition,

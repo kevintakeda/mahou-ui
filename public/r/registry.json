@@ -64,7 +64,8 @@
       "type": "registry:ui",
       "dependencies": [
         "pixi.js",
-        "@pixi/react"
+        "@pixi/react",
+        "pixi-filters"
       ],
       "files": [
         {

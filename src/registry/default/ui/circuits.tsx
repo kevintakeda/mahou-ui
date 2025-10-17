@@ -54,8 +54,8 @@ export function Circuits({
   colorStops = defaultColorStops,
   trailWidth = 512,
   trailHeight = 256,
-  bloomStrength = 8,
-  bloomKernelSize = 15,
+  bloomStrength = 16,
+  bloomKernelSize = 5,
   bloomQuality = 10,
 }: CircuitsProps) {
   useExtend({ Container, Sprite, Graphics });
