@@ -232,7 +232,7 @@ export function GridParticles({
 
   const animate = useCallback<TickerCallback<unknown>>(
     (ticker) => {
-      timeRef.current += ticker.deltaTime;
+      timeRef.current += ticker.deltaMS;
       const time = timeRef.current;
 
       points.forEach((point) => {
