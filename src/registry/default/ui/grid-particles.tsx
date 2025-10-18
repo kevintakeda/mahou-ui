@@ -11,20 +11,11 @@ import {
 import { useCallback, useMemo, useRef } from "react";
 import { createNoise2D } from "simplex-noise";
 
-export interface RectDefinition {
-  type: "rect";
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+export interface EllipseMask {
+  radiusX: number;
+  radiusY: number;
+  invert?: boolean;
 }
-
-export interface PolygonDefinition {
-  type: "polygon";
-  points: Array<{ x: number; y: number }>;
-}
-
-export type ShapeDefinition = RectDefinition | PolygonDefinition;
 
 export interface GridParticlesProps {
   cellSize?: number;
@@ -36,7 +27,6 @@ export interface GridParticlesProps {
   size?: number;
   frequency?: number;
   threshold?: number;
-  masks?: ShapeDefinition[];
   fitToContainer?: boolean;
   mode?:
     | "random"
@@ -46,62 +36,7 @@ export interface GridParticlesProps {
     | "right-to-left"
     | "center-outward";
   randomFn?: () => number;
-}
-
-function pointInRect(
-  x: number,
-  y: number,
-  rx: number,
-  ry: number,
-  rw: number,
-  rh: number,
-): boolean {
-  return x >= rx && x <= rx + rw && y >= ry && y <= ry + rh;
-}
-
-function pointInPolygon(
-  x: number,
-  y: number,
-  polygon: Array<{ x: number; y: number }>,
-): boolean {
-  const n = polygon.length;
-  let isInside = false;
-
-  for (let i = 0, j = n - 1; i < n; j = i++) {
-    const xi = polygon[i].x;
-    const yi = polygon[i].y;
-    const xj = polygon[j].x;
-    const yj = polygon[j].y;
-
-    const intersect =
-      yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
-    if (intersect) isInside = !isInside;
-  }
-
-  return isInside;
-}
-
-function isPointInShapes(
-  point: { x: number; y: number },
-  shapes: ShapeDefinition[],
-): boolean {
-  if (!shapes || shapes.length === 0) return true;
-
-  return shapes.some((shape) => {
-    if (shape.type === "rect") {
-      return pointInRect(
-        point.x,
-        point.y,
-        shape.x,
-        shape.y,
-        shape.width,
-        shape.height,
-      );
-    } else if (shape.type === "polygon") {
-      return pointInPolygon(point.x, point.y, shape.points);
-    }
-    return false;
-  });
+  ellipseMask?: EllipseMask;
 }
 
 export function GridParticles({
@@ -114,10 +49,10 @@ export function GridParticles({
   size = 2,
   frequency = 3,
   threshold = 0.4,
-  masks = [],
   fitToContainer = true,
   mode = "random",
   randomFn = Math.random,
+  ellipseMask,
 }: GridParticlesProps) {
   useExtend({ Container, Sprite, Graphics });
   const { app, isInitialised } = useApplication();
@@ -162,6 +97,8 @@ export function GridParticles({
     const arr = [];
     const phaseOffset = Math.PI * 2;
     const baseSpeed = minSpeed + (maxSpeed - minSpeed) / 2;
+    const halfW = effectiveW / 2;
+    const halfH = effectiveH / 2;
 
     for (let c = 0; c <= cols; c++) {
       for (let r = 0; r <= rows; r++) {
@@ -175,6 +112,21 @@ export function GridParticles({
           y: r * vSpacing + offsetY,
           id: `${c}-${r}`,
         };
+
+        if (ellipseMask) {
+          const translatedPoint = {
+            x: point.x - halfW,
+            y: point.y - halfH,
+          };
+          const isInside =
+            (translatedPoint.x / ellipseMask.radiusX) ** 2 +
+              (translatedPoint.y / ellipseMask.radiusY) ** 2 <=
+            1;
+
+          if (isInside === ellipseMask.invert) {
+            continue;
+          }
+        }
 
         const speed =
           mode === "random"
@@ -207,9 +159,8 @@ export function GridParticles({
         } else {
           phase = Math.random() * Math.PI * 2;
         }
-        if (isPointInShapes(point, masks)) {
-          arr.push({ ...point, phase, speed, ref: null as Sprite | null });
-        }
+
+        arr.push({ ...point, phase, speed, ref: null as Sprite | null });
       }
     }
     return arr;
@@ -221,13 +172,13 @@ export function GridParticles({
     noise2D,
     frequency,
     threshold,
-    masks,
     app,
     app.renderer?.width,
     app.renderer?.height,
     size,
     fitToContainer,
     mode,
+    ellipseMask,
   ]);
 
   const animate = useCallback<TickerCallback<unknown>>(

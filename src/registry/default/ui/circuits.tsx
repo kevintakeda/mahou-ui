@@ -34,6 +34,9 @@ interface CircuitsProps {
   bloomStrength?: number;
   bloomKernelSize?: number;
   bloomQuality?: number;
+  loop?: boolean;
+  playing?: boolean;
+  onEnd?: () => void;
 }
 
 const defaultColorStops: ColorStop[] = [
@@ -57,6 +60,9 @@ export function Circuits({
   bloomStrength = 16,
   bloomKernelSize = 5,
   bloomQuality = 10,
+  loop = true,
+  playing = true,
+  onEnd,
 }: CircuitsProps) {
   useExtend({ Container, Sprite, Graphics });
   const [animationVersion, setAnimationVersion] = useState(0);
@@ -66,9 +72,12 @@ export function Circuits({
     finishedCounter.current++;
     if (finishedCounter.current >= numPaths) {
       finishedCounter.current = 0;
-      setAnimationVersion((v) => v + 1);
+      onEnd?.();
+      if (loop) {
+        setAnimationVersion((v) => v + 1);
+      }
     }
-  }, [numPaths]);
+  }, [numPaths, loop, onEnd]);
 
   const gradient = useMemo(
     () =>
@@ -130,6 +139,7 @@ export function Circuits({
           gradient={gradient}
           onFinish={onFinish}
           animationVersion={animationVersion}
+          playing={playing}
         />
       ))}
     </pixiContainer>
@@ -151,6 +161,7 @@ function SingleCircuit({
   gradient,
   onFinish,
   animationVersion,
+  playing,
 }: {
   speed: number;
   stepY: number;
@@ -166,6 +177,7 @@ function SingleCircuit({
   gradient: FillGradient;
   onFinish: () => void;
   animationVersion: number;
+  playing: boolean;
 }) {
   const maskRef = useRef<Graphics>(null);
   const gradientRef = useRef<Graphics>(null);
@@ -228,7 +240,7 @@ function SingleCircuit({
   }, [animationVersion, startYPos]);
 
   useTick((ticker) => {
-    if (gradientRef.current) {
+    if (gradientRef.current && playing) {
       if (onFinishCalledRef.current) {
         return;
       }

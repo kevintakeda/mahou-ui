@@ -4,26 +4,24 @@ import { HomeParticles } from "./home-particles";
 export default function HomePage() {
   return (
     <main className="flex flex-1 flex-col justify-center p-4 text-center">
-      <Link
-        href="/docs"
-        className="-mt-24 mx-auto block font-semibold text-fd-foreground underline"
-      >
+      <div className="-mt-24 mx-auto block font-semibold text-fd-foreground underline">
         <div className="relative grid grid-cols-1 grid-rows-1 place-items-center">
-          <HomeParticles className="-top-16 relative col-start-1 row-start-1 sm:w-[500px]" />
+          <HomeParticles className="relative col-start-1 row-start-1 sm:w-[500px]" />
+          {/** biome-ignore lint/performance/noImgElement: We are using static mode. */}
           <img
-            className="col-start-1 row-start-1 block"
+            className="relative z-10 col-start-1 row-start-1 block"
             width={300}
             height={207}
             alt="Mahou UI"
             src="/mahou.webp"
           />
         </div>
-      </Link>
+      </div>
       <h1 className="mb-4 font-semibold text-2xl">Mahou UI</h1>
       <div className="grid place-items-center gap-8 px-8 text-fd-muted-foreground">
         <Link
           href="/docs"
-          className="relative inset-shadow-accent/5 inset-shadow-sm inline-flex items-center justify-center rounded-full border border-accent/50 bg-linear-to-t from-accent/5 to-accent/0 px-5 py-2.5 font-medium text-sm text-white shadow-accent/5 shadow-lg"
+          className="relative inset-shadow-accent/5 inset-shadow-sm inline-flex items-center justify-center rounded-full border border-gray-400 bg-linear-to-t from-accent/5 to-accent/0 px-5 py-2.5 font-medium text-sm shadow-accent/5 shadow-lg dark:border-accent/50 dark:text-white"
         >
           Browse Components
         </Link>

@@ -1,15 +1,13 @@
 "use client";
 import { Application } from "@pixi/react";
-import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  GridParticles,
-  type ShapeDefinition,
-} from "@/registry/default/ui/grid-particles";
+import { useTheme } from "next-themes";
+import { useEffect, useRef, useState } from "react";
+import { GridParticles } from "@/registry/default/ui/grid-particles";
 
 export default function GridParticlesExample() {
   const ref = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const masks = useMemo<Array<ShapeDefinition>>(() => [], []);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!ref.current) return;
@@ -38,8 +36,15 @@ export default function GridParticlesExample() {
         backgroundAlpha={0}
         width={dimensions.width}
         height={dimensions.height}
+        onInit={(app) => {
+          app.canvas.style.pointerEvents = "auto";
+          app.canvas.style.touchAction = "auto";
+        }}
       >
-        <GridParticles masks={masks} mode="random" />
+        <GridParticles
+          mode="random"
+          color={theme === "dark" ? 0xd2ff65 : 0x5d7522}
+        />
       </Application>
     </div>
   );

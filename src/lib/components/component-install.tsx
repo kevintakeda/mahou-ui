@@ -17,7 +17,7 @@ export function ComponentInstall({ name }: { name: string }) {
 
   return (
     <Tabs
-      className="rounded-lg border border-neutral-800 bg-neutral-900 p-2"
+      className="rounded-lg border dark:border-neutral-800 dark:bg-neutral-900 p-2"
       defaultValue={activeValue}
       onValueChange={setValue}
     >

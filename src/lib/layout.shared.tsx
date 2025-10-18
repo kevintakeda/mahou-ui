@@ -12,15 +12,18 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (
         <>
-          <svg
-            width="24"
-            height="24"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-label="Logo"
-          >
-            <title>Mahou Bits</title>
-            <circle cx={12} cy={12} r={12} fill="currentColor" />
-          </svg>
+          <div className="flex items-center gap-2.5 font-semibold text-accent">
+            <svg
+              width="24"
+              height="24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-label="Logo"
+            >
+              <title>Mahou Bits</title>
+              <circle cx={20} cy={4} r={3} fill="currentColor" />
+            </svg>
+            Mahou UI
+          </div>
         </>
       ),
     },
