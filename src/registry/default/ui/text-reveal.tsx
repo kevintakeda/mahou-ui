@@ -15,7 +15,7 @@ export function TextReveal({
   baseOpacity = 0.1,
   className = "",
   start = "10%",
-  offset = 10,
+  offset = 32,
   offsetMultiplier = 1.1,
 }: TextRevealProps) {
   const chars = text.trim().split("");

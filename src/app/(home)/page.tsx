@@ -17,11 +17,13 @@ export default function HomePage() {
           />
         </div>
       </div>
-      <h1 className="mb-4 font-semibold text-2xl">Mahou UI</h1>
+      <h1 className="mb-4 font-semibold text-2xl text-lime-900 dark:text-white">
+        Mahou UI
+      </h1>
       <div className="grid place-items-center gap-8 px-8 text-fd-muted-foreground">
         <Link
           href="/docs"
-          className="relative inset-shadow-accent/5 inset-shadow-sm inline-flex items-center justify-center rounded-full border border-gray-400 bg-linear-to-t from-accent/5 to-accent/0 px-5 py-2.5 font-medium text-sm shadow-accent/5 shadow-lg dark:border-accent/50 dark:text-white"
+          className="relative inset-shadow-lime-100/5 inset-shadow-sm inline-flex items-center justify-center rounded-full border border-gray-400 bg-linear-to-t from-lime-100/5 to-lime-100/0 px-5 py-2.5 font-medium text-sm shadow-lg shadow-lime-100/5 dark:border-lime-100/50 dark:text-white"
         >
           Browse Components
         </Link>

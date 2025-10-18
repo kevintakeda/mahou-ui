@@ -6,7 +6,17 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-accent: oklch(0.9421 0.1873 124);
+  --color-lime-50: oklch(0.986 0.1873 124);
+  --color-lime-100: oklch(0.967 0.1873 124);
+  --color-lime-200: oklch(0.938 0.1873 124);
+  --color-lime-300: oklch(0.897 0.1873 124);
+  --color-lime-400: oklch(0.841 0.1873 124);
+  --color-lime-500: oklch(0.768 0.1873 124);
+  --color-lime-600: oklch(0.648 0.1873 124);
+  --color-lime-700: oklch(0.532 0.1873 124);
+  --color-lime-800: oklch(0.453 0.1873 124);
+  --color-lime-900: oklch(0.405 0.1873 124);
+  --color-lime-950: oklch(0.274 0.1873 124);
 }
 
 @keyframes activate {
@@ -15,7 +25,7 @@
     color: inherit;
   }
   50% {
-    color: var(--color-accent);
+    color: var(--color-lime-100);
     opacity: 1;
   }
   100% {
