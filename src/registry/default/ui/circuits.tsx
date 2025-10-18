@@ -37,6 +37,7 @@ interface CircuitsProps {
   loop?: boolean;
   playing?: boolean;
   onEnd?: () => void;
+  directionBias?: number;
 }
 
 const defaultColorStops: ColorStop[] = [
@@ -63,6 +64,7 @@ export function Circuits({
   loop = true,
   playing = true,
   onEnd,
+  directionBias = 0.5,
 }: CircuitsProps) {
   useExtend({ Container, Sprite, Graphics });
   const [animationVersion, setAnimationVersion] = useState(0);
@@ -112,13 +114,17 @@ export function Circuits({
       const offset = (width - totalSpan) / 2;
       const x = offset + i * optimalGap;
 
+      const bias =
+        centerIndex > 0 ? (directionBias * (i - centerIndex)) / centerIndex : 0;
+
       return {
         id: i,
         speed: finalSpeed,
         startX: x,
+        bias,
       };
     });
-  }, [numPaths, speed, stepX, width]);
+  }, [numPaths, speed, stepX, width, directionBias]);
 
   return (
     <pixiContainer width={width} height={height} filters={filters}>
@@ -140,6 +146,7 @@ export function Circuits({
           onFinish={onFinish}
           animationVersion={animationVersion}
           playing={playing}
+          bias={config.bias}
         />
       ))}
     </pixiContainer>
@@ -162,6 +169,7 @@ function SingleCircuit({
   onFinish,
   animationVersion,
   playing,
+  bias = 0,
 }: {
   speed: number;
   stepY: number;
@@ -178,6 +186,7 @@ function SingleCircuit({
   onFinish: () => void;
   animationVersion: number;
   playing: boolean;
+  bias?: number;
 }) {
   const maskRef = useRef<Graphics>(null);
   const gradientRef = useRef<Graphics>(null);
@@ -189,8 +198,11 @@ function SingleCircuit({
         y = startY;
 
       g.moveTo(x, y);
-      let dir = Math.random() > 0.5 ? 1 : -1;
+      const probRight = 0.5 + 0.5 * bias;
+      let dir = Math.random() < probRight ? 1 : -1;
       let alt = -1;
+
+      const preferred = bias > 0 ? 1 : bias < 0 ? -1 : 0;
 
       for (let j = 0; j < steps; j++) {
         if (alt === -1) {
@@ -199,7 +211,13 @@ function SingleCircuit({
           g.lineTo(x, y);
         } else {
           alt = -1;
-          dir *= -1;
+          if (preferred === 0) {
+            dir *= -1;
+          } else {
+            if (dir !== preferred) {
+              dir *= -1;
+            }
+          }
           x = x + stepX * dir;
           y = y + stepY;
           g.lineTo(x, y);
@@ -207,7 +225,7 @@ function SingleCircuit({
       }
       g.stroke({ color: 0x00ff00, width: 1, pixelLine: true });
     },
-    [stepJitterMax, stepJitterMin, stepX, stepY, steps, startX, startY],
+    [stepJitterMax, stepJitterMin, stepX, stepY, steps, startX, startY, bias],
   );
 
   const drawGradient = useCallback(

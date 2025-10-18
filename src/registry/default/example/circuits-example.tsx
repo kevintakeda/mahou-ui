@@ -1,12 +1,18 @@
 "use client";
 
 import { Application } from "@pixi/react";
+import { useTheme } from "next-themes";
+import { Color } from "pixi.js";
 import { Circuits } from "../ui/circuits";
 
 export default function StreamExample() {
+  const { theme } = useTheme();
   return (
-    <div className="relative h-[500px] w-[400px] rounded-lg bg-neutral-300 p-8 dark:bg-transparent">
-      <div className="absolute inset-0">
+    <div className="relative grid place-items-center rounded-lg p-8 dark:bg-transparent">
+      <div className="w-[280px] rounded-sm border py-10 text-center text-foreground">
+        Data
+      </div>
+      <div className="h-[256px]">
         <Application
           antialias
           autoDensity
@@ -14,24 +20,36 @@ export default function StreamExample() {
           sharedTicker
           preference="webgpu"
           backgroundAlpha={0}
-          width={400}
-          height={500}
+          width={320}
+          height={256}
           onInit={(app) => {
             app.canvas.style.pointerEvents = "auto";
             app.canvas.style.touchAction = "auto";
           }}
         >
           <Circuits
-            trailWidth={400}
-            trailHeight={400}
-            width={400}
-            height={500}
+            trailWidth={320}
+            trailHeight={256}
+            width={320}
+            height={256}
             steps={16}
-            speed={800}
-            numPaths={9}
+            speed={500}
+            numPaths={8}
+            colorStops={
+              theme === "dark"
+                ? [
+                    { offset: 0, color: new Color(0xff94fe).setAlpha(0) },
+                    { offset: 1, color: new Color(0xd2ff65) },
+                  ]
+                : [
+                    { offset: 0, color: new Color(0x963097).setAlpha(0) },
+                    { offset: 1, color: new Color(0xa2d300) },
+                  ]
+            }
           />
         </Application>
       </div>
+      <div className="w-[400px] rounded-sm border py-10 text-center">LLMs</div>
     </div>
   );
 }

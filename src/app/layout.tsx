@@ -1,6 +1,7 @@
 import "@/app/global.css";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import { Inter } from "next/font/google";
+import Head from "next/head";
 
 const inter = Inter({
   subsets: ["latin"],
