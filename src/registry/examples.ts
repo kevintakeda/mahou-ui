@@ -34,4 +34,15 @@ export const examples: Registry["items"] = [
       },
     ],
   },
+  {
+    name: "flow-example",
+    type: "registry:ui",
+    registryDependencies: ["flow"],
+    files: [
+      {
+        path: "src/registry/default/example/flow-example.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
 ];

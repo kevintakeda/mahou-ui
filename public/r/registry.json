@@ -60,16 +60,15 @@
       ]
     },
     {
-      "name": "circuits",
+      "name": "flow",
       "type": "registry:ui",
       "dependencies": [
-        "pixi.js",
-        "@pixi/react",
-        "pixi-filters"
+        "motion",
+        "react-use-measure"
       ],
       "files": [
         {
-          "path": "src/registry/default/ui/circuits.tsx",
+          "path": "src/registry/default/ui/flow.tsx",
           "type": "registry:ui"
         }
       ]
@@ -110,6 +109,19 @@
         {
           "path": "src/registry/default/example/circuits-example.tsx",
           "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "flow-example",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "flow"
+      ],
+      "files": [
+        {
+          "path": "src/registry/default/example/flow-example.tsx",
+          "type": "registry:ui"
         }
       ]
     }

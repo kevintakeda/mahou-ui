@@ -77,8 +77,8 @@ export function GridParticles({
   const points = useMemo(() => {
     if (!isInitialised) return [];
 
-    const effectiveW = app.renderer.width;
-    const effectiveH = app.renderer.height;
+    const effectiveW = app.renderer?.width;
+    const effectiveH = app.renderer?.height;
 
     if (!effectiveW || !effectiveH) return [];
 
@@ -173,8 +173,6 @@ export function GridParticles({
     frequency,
     threshold,
     app,
-    app.renderer?.width,
-    app.renderer?.height,
     size,
     fitToContainer,
     mode,

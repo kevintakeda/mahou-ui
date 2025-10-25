@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flow-example",
+  "type": "registry:ui",
+  "registryDependencies": [
+    "flow"
+  ],
+  "files": [
+    {
+      "path": "src/registry/default/example/flow-example.tsx",
+      "content": "\"use client\";\nimport { useTheme } from \"next-themes\";\nimport { useRef } from \"react\";\nimport Flow from \"../ui/flow\";\n\nexport default function FlowExample() {\n  const ref = useRef<HTMLDivElement>(null);\n  const ref1 = useRef<HTMLDivElement>(null);\n  const ref2 = useRef<HTMLDivElement>(null);\n  const ref3 = useRef<HTMLDivElement>(null);\n  const ref4 = useRef<HTMLDivElement>(null);\n  const { theme } = useTheme();\n\n  const baseColor = theme === \"dark\" ? \"#444\" : \"#ccc\";\n  const flowColor = theme === \"dark\" ? \"#9bc612\" : \"#b6e343\";\n\n  return (\n    <div\n      ref={ref}\n      className={\"relative mx-auto my-8 w-full place-items-center\"}\n    >\n      <div>\n        <div\n          className=\"relative z-0 mb-[200px] h-16 w-16 border bg-neutral-800 sm:h-32 sm:w-32 dark:bg-neutral-200\"\n          ref={ref1}\n        ></div>\n        <div className=\"flex gap-8\">\n          <div\n            className=\"relative z-0 h-16 w-16 border bg-lime-400 sm:h-32 sm:w-32 dark:bg-lime-200\"\n            ref={ref2}\n          ></div>\n          <div\n            className=\"relative z-0 h-16 w-16 border bg-lime-400 sm:h-32 sm:w-32 dark:bg-lime-200\"\n            ref={ref3}\n          ></div>\n          <div\n            className=\"relative z-0 h-16 w-16 border bg-lime-400 sm:h-32 sm:w-32 dark:bg-lime-200\"\n            ref={ref4}\n          ></div>\n          <Flow\n            fromRef={ref1}\n            toRef={ref2}\n            flowColor={flowColor}\n            baseColor={baseColor}\n            style=\"sharp\"\n            glow={4}\n          />\n          <Flow\n            fromRef={ref1}\n            toRef={ref3}\n            flowColor={flowColor}\n            baseColor={baseColor}\n            style=\"sharp\"\n            glow={4}\n          />\n          <Flow\n            fromRef={ref1}\n            toRef={ref4}\n            flowColor={flowColor}\n            baseColor={baseColor}\n            style=\"sharp\"\n            glow={4}\n          />\n        </div>\n      </div>\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ]
+}

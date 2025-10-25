@@ -53,20 +53,20 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
-  circuits: {
-    name: "circuits",
+  flow: {
+    name: "flow",
     description: "",
     type: "registry:ui",
     registryDependencies: undefined,
     files: [
       {
-        path: "src/registry/default/ui/circuits.tsx",
+        path: "src/registry/default/ui/flow.tsx",
         type: "registry:ui",
         target: "",
       },
     ],
     component: React.lazy(async () => {
-      const mod = await import("@/registry/default/ui/circuits.tsx");
+      const mod = await import("@/registry/default/ui/flow.tsx");
       const exportName =
         Object.keys(mod).find(
           (key) =>
@@ -145,6 +145,30 @@ export const Index: Record<string, any> = {
       const mod = await import(
         "@/registry/default/example/circuits-example.tsx"
       );
+      const exportName =
+        Object.keys(mod).find(
+          (key) =>
+            typeof mod[key] === "function" || typeof mod[key] === "object",
+        ) || item.name;
+      return { default: mod.default || mod[exportName] };
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "flow-example": {
+    name: "flow-example",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: ["flow"],
+    files: [
+      {
+        path: "src/registry/default/example/flow-example.tsx",
+        type: "registry:ui",
+        target: "",
+      },
+    ],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/example/flow-example.tsx");
       const exportName =
         Object.keys(mod).find(
           (key) =>

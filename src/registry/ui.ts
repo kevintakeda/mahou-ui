@@ -56,12 +56,12 @@ export const ui: Registry["items"] = [
     ],
   },
   {
-    name: "circuits",
+    name: "flow",
     type: "registry:ui",
-    dependencies: ["pixi.js", "@pixi/react", "pixi-filters"],
+    dependencies: ["motion", "react-use-measure"],
     files: [
       {
-        path: "src/registry/default/ui/circuits.tsx",
+        path: "src/registry/default/ui/flow.tsx",
         type: "registry:ui",
       },
     ],
