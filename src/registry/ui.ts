@@ -66,4 +66,37 @@ export const ui: Registry["items"] = [
       },
     ],
   },
+  {
+    name: "cutout",
+    type: "registry:ui",
+    files: [
+      {
+        path: "src/registry/default/ui/cutout.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
+  {
+    name: "cyber-button",
+    type: "registry:ui",
+    dependencies: ["class-variance-authority"],
+    registryDependencies: ["cutout"],
+    files: [
+      {
+        path: "src/registry/default/ui/cyber-button.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
+  {
+    name: "decrypted-text",
+    type: "registry:ui",
+    dependencies: ["tempus"],
+    files: [
+      {
+        path: "src/registry/default/ui/decrypted-text.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
 ];

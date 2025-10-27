@@ -1,0 +1,32 @@
+---
+title: Decrypted Text
+description: A text animation component that creates a decryption effect
+---
+
+## Preview
+
+<ComponentDisplay name="decrypted-text-example"/>
+
+## Installation
+
+### CLI
+<ComponentInstall name="decrypted-text" />
+
+### Usage
+```tsx
+import { DecryptedText } from "@/components/ui/decrypted-text"
+```
+
+
+```tsx
+<DecryptedText text="HELLO WORLD!" />
+```
+
+## Props
+| Prop           | Type     | Default | Description                                           |
+| -------------- | -------- | ------- | ----------------------------------------------------- |
+| `text`         | `string` | `-`     | The text to display                                   |
+| `chars`        | `string` | `-`     | Characters used for the decryption animation effect   |
+| `stagger`      | `number` | `16`    | Delay between starting animation for each character   |
+| `updateRate`   | `number` | `16`    | How frequently the animation updates (in ms)          |
+| `charDuration` | `number` | `500`   | How long each character animates before revealing     |

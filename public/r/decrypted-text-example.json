@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "decrypted-text-example",
+  "type": "registry:ui",
+  "registryDependencies": [
+    "decrypted-text"
+  ],
+  "files": [
+    {
+      "path": "src/registry/default/example/decrypted-text-example.tsx",
+      "content": "import DecryptedText from \"../ui/decrypted-text\";\n\nexport default function DecryptedTextExample() {\n  return (\n    <div>\n      <DecryptedText text=\"HELLO WORLD!\" />\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ]
+}

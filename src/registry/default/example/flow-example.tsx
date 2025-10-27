@@ -1,6 +1,7 @@
 "use client";
 import { useTheme } from "next-themes";
 import { useRef } from "react";
+import { Cutout } from "../ui/cutout";
 import Flow from "../ui/flow";
 
 export default function FlowExample() {
@@ -20,23 +21,23 @@ export default function FlowExample() {
       className={"relative mx-auto my-8 w-full place-items-center"}
     >
       <div>
-        <div
+        <Cutout
           className="relative z-0 mb-[200px] h-16 w-16 border bg-neutral-800 sm:h-32 sm:w-32 dark:bg-neutral-200"
           ref={ref1}
-        ></div>
+        ></Cutout>
         <div className="flex gap-8">
-          <div
+          <Cutout
             className="relative z-0 h-16 w-16 border bg-lime-400 sm:h-32 sm:w-32 dark:bg-lime-200"
             ref={ref2}
-          ></div>
-          <div
+          ></Cutout>
+          <Cutout
             className="relative z-0 h-16 w-16 border bg-lime-400 sm:h-32 sm:w-32 dark:bg-lime-200"
             ref={ref3}
-          ></div>
-          <div
+          ></Cutout>
+          <Cutout
             className="relative z-0 h-16 w-16 border bg-lime-400 sm:h-32 sm:w-32 dark:bg-lime-200"
             ref={ref4}
-          ></div>
+          ></Cutout>
           <Flow
             fromRef={ref1}
             toRef={ref2}

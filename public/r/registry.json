@@ -74,6 +74,45 @@
       ]
     },
     {
+      "name": "cutout",
+      "type": "registry:ui",
+      "files": [
+        {
+          "path": "src/registry/default/ui/cutout.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "cyber-button",
+      "type": "registry:ui",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "cutout"
+      ],
+      "files": [
+        {
+          "path": "src/registry/default/ui/cyber-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "decrypted-text",
+      "type": "registry:ui",
+      "dependencies": [
+        "tempus"
+      ],
+      "files": [
+        {
+          "path": "src/registry/default/ui/decrypted-text.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "text-reveal-example",
       "type": "registry:component",
       "registryDependencies": [
@@ -116,11 +155,38 @@
       "name": "flow-example",
       "type": "registry:ui",
       "registryDependencies": [
-        "flow"
+        "flow",
+        "cutout"
       ],
       "files": [
         {
           "path": "src/registry/default/example/flow-example.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "cyber-button-example",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "cyber-button"
+      ],
+      "files": [
+        {
+          "path": "src/registry/default/example/cyber-button-example.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "decrypted-text-example",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "decrypted-text"
+      ],
+      "files": [
+        {
+          "path": "src/registry/default/example/decrypted-text-example.tsx",
           "type": "registry:ui"
         }
       ]

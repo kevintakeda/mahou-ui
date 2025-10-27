@@ -5,29 +5,30 @@ description: ⚡ Magic circuits flowing
 
 ## Preview
 
-<ComponentDisplay name="flow-example"/>
+<ComponentDisplay name="flow-example" />
 
 ## Installation
 
 ### CLI
+
 <ComponentInstall name="flow" />
 
 ### Usage
+
 ```tsx
-import { Flow } from "@/components/ui/flow"
-
-
+import { Flow } from "@/components/ui/flow";
 ```
+
 ## Props
 
-| Prop            | Type                          | Default     | Description                                      |
-| --------------- | ----------------------------- | ----------- | ------------------------------------------------ |
-| `className`     | `string`                      | `-`         | Additional class name for the SVG element        |
-| `fromRef`       | `RefObject<HTMLElement \| null>` | `-`      | Reference to the starting HTMLElement            |
-| `toRef`         | `RefObject<HTMLElement \| null>` | `-`      | Reference to the ending HTMLElement              |
-| `borderRadius`  | `number`                      | `48`        | Radius for path curves or steps                  |
-| `spacing`       | `number`                      | `200`       | Length of dashes in the animated flow            |
-| `glow`          | `number`                      | `0`         | Intensity of the glow effect                     |
-| `baseColor`     | `string`                      | `-`         | Color for the static base path                   |
-| `flowColor`     | `string`                      | `-`         | Color for the animated flowing path (required)   |
-| `style`         | `"smooth" \| "sharp"`         | `"sharp"`  | Style of the path: smooth or sharp                |
+| Prop           | Type                             | Default   | Description                                    |
+| -------------- | -------------------------------- | --------- | ---------------------------------------------- |
+| `className`    | `string`                         | `-`       | Additional class name for the SVG element      |
+| `fromRef`      | `RefObject<HTMLElement \| null>` | `-`       | Reference to the starting HTMLElement          |
+| `toRef`        | `RefObject<HTMLElement \| null>` | `-`       | Reference to the ending HTMLElement            |
+| `borderRadius` | `number`                         | `48`      | Radius for path curves or steps                |
+| `spacing`      | `number`                         | `200`     | Length of dashes in the animated flow          |
+| `glow`         | `number`                         | `0`       | Intensity of the glow effect                   |
+| `baseColor`    | `string`                         | `-`       | Color for the static base path                 |
+| `flowColor`    | `string`                         | `-`       | Color for the animated flowing path (required) |
+| `style`        | `"smooth" \| "sharp"`            | `"sharp"` | Style of the path: smooth or sharp             |

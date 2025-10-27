@@ -37,10 +37,32 @@ export const examples: Registry["items"] = [
   {
     name: "flow-example",
     type: "registry:ui",
-    registryDependencies: ["flow"],
+    registryDependencies: ["flow", "cutout"],
     files: [
       {
         path: "src/registry/default/example/flow-example.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
+  {
+    name: "cyber-button-example",
+    type: "registry:ui",
+    registryDependencies: ["cyber-button"],
+    files: [
+      {
+        path: "src/registry/default/example/cyber-button-example.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
+  {
+    name: "decrypted-text-example",
+    type: "registry:ui",
+    registryDependencies: ["decrypted-text"],
+    files: [
+      {
+        path: "src/registry/default/example/decrypted-text-example.tsx",
         type: "registry:ui",
       },
     ],

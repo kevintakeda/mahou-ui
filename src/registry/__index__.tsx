@@ -77,6 +77,78 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
+  cutout: {
+    name: "cutout",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: undefined,
+    files: [
+      {
+        path: "src/registry/default/ui/cutout.tsx",
+        type: "registry:ui",
+        target: "",
+      },
+    ],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/ui/cutout.tsx");
+      const exportName =
+        Object.keys(mod).find(
+          (key) =>
+            typeof mod[key] === "function" || typeof mod[key] === "object",
+        ) || item.name;
+      return { default: mod.default || mod[exportName] };
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "cyber-button": {
+    name: "cyber-button",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: ["cutout"],
+    files: [
+      {
+        path: "src/registry/default/ui/cyber-button.tsx",
+        type: "registry:ui",
+        target: "",
+      },
+    ],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/ui/cyber-button.tsx");
+      const exportName =
+        Object.keys(mod).find(
+          (key) =>
+            typeof mod[key] === "function" || typeof mod[key] === "object",
+        ) || item.name;
+      return { default: mod.default || mod[exportName] };
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "decrypted-text": {
+    name: "decrypted-text",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: undefined,
+    files: [
+      {
+        path: "src/registry/default/ui/decrypted-text.tsx",
+        type: "registry:ui",
+        target: "",
+      },
+    ],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/ui/decrypted-text.tsx");
+      const exportName =
+        Object.keys(mod).find(
+          (key) =>
+            typeof mod[key] === "function" || typeof mod[key] === "object",
+        ) || item.name;
+      return { default: mod.default || mod[exportName] };
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "text-reveal-example": {
     name: "text-reveal-example",
     description: "",
@@ -159,7 +231,7 @@ export const Index: Record<string, any> = {
     name: "flow-example",
     description: "",
     type: "registry:ui",
-    registryDependencies: ["flow"],
+    registryDependencies: ["flow", "cutout"],
     files: [
       {
         path: "src/registry/default/example/flow-example.tsx",
@@ -169,6 +241,58 @@ export const Index: Record<string, any> = {
     ],
     component: React.lazy(async () => {
       const mod = await import("@/registry/default/example/flow-example.tsx");
+      const exportName =
+        Object.keys(mod).find(
+          (key) =>
+            typeof mod[key] === "function" || typeof mod[key] === "object",
+        ) || item.name;
+      return { default: mod.default || mod[exportName] };
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "cyber-button-example": {
+    name: "cyber-button-example",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: ["cyber-button"],
+    files: [
+      {
+        path: "src/registry/default/example/cyber-button-example.tsx",
+        type: "registry:ui",
+        target: "",
+      },
+    ],
+    component: React.lazy(async () => {
+      const mod = await import(
+        "@/registry/default/example/cyber-button-example.tsx"
+      );
+      const exportName =
+        Object.keys(mod).find(
+          (key) =>
+            typeof mod[key] === "function" || typeof mod[key] === "object",
+        ) || item.name;
+      return { default: mod.default || mod[exportName] };
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "decrypted-text-example": {
+    name: "decrypted-text-example",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: ["decrypted-text"],
+    files: [
+      {
+        path: "src/registry/default/example/decrypted-text-example.tsx",
+        type: "registry:ui",
+        target: "",
+      },
+    ],
+    component: React.lazy(async () => {
+      const mod = await import(
+        "@/registry/default/example/decrypted-text-example.tsx"
+      );
       const exportName =
         Object.keys(mod).find(
           (key) =>
