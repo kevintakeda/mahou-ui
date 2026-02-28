@@ -65,5 +65,8 @@
     "vitest": "^3.2.4",
     "web-vitals": "^5.1.0",
     "wrangler": "^4.69.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["sharp", "workerd"]
   }
 }
