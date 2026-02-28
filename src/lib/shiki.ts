@@ -7,7 +7,7 @@ async function getHighlighter() {
   if (!highlighterPromise) {
     highlighterPromise = createHighlighter({
       themes: ['vitesse-dark'],
-      langs: ['tsx', 'ts', 'javascript', 'css', 'html', 'bash'],
+      langs: ['tsx', 'bash'],
     })
   }
 
