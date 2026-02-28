@@ -18,14 +18,14 @@ type NormalizedDependencies = {
 }
 
 type ShadcnRegistryFileType =
-  | 'registry:component'
+  | 'registry:ui'
   | 'registry:hook'
   | 'registry:lib'
   | 'registry:page'
 
 type ShadcnRegistryItem = {
   name: string
-  type: 'registry:component'
+  type: 'registry:ui'
   title: string
   description: string
   dependencies?: Array<string>
@@ -33,6 +33,7 @@ type ShadcnRegistryItem = {
   files: Array<{
     path: string
     type: ShadcnRegistryFileType
+    content?: string
   }>
 }
 
@@ -76,7 +77,39 @@ function getRegistryFileType(file: string): ShadcnRegistryFileType {
     return 'registry:page'
   }
 
-  return 'registry:component'
+  return 'registry:ui'
+}
+
+function buildShadcnItem(
+  id: string,
+  metadata: any,
+  files: Record<string, string>,
+  normalizedDependencies: NormalizedDependencies,
+  withInlineContent = false,
+): ShadcnRegistryItem {
+  const shadcnItem: ShadcnRegistryItem = {
+    name: id,
+    type: 'registry:ui',
+    title: metadata.title || toTitleCase(id),
+    description: metadata.description || `Reusable ${id} component.`,
+    files: Object.keys(files)
+      .filter((fileName) => fileName !== 'metadata.ts' && fileName !== 'demo.tsx')
+      .sort((a, b) => a.localeCompare(b))
+      .map((fileName) => ({
+        path: `${id}/${fileName}`,
+        type: getRegistryFileType(fileName),
+        ...(withInlineContent ? { content: files[fileName] } : {}),
+      })),
+  }
+
+  if (normalizedDependencies.external.length > 0) {
+    shadcnItem.dependencies = normalizedDependencies.external
+  }
+  if (normalizedDependencies.internal.length > 0) {
+    shadcnItem.registryDependencies = normalizedDependencies.internal
+  }
+
+  return shadcnItem
 }
 
 async function main() {
@@ -86,8 +119,6 @@ async function main() {
   const entries = await fs.readdir(SKETCHES_DIR, { withFileTypes: true })
   const spellDirs = entries.filter((dirent) => dirent.isDirectory())
 
-  const byId: Record<string, any> = {}
-  const byCategory: Record<string, Array<string>> = {}
   const shadcnItems: Array<ShadcnRegistryItem> = []
 
   for (const dir of spellDirs) {
@@ -142,19 +173,22 @@ async function main() {
         metadata.dependencies,
       )
 
-      const data = {
+      const shadcnItemForFile = buildShadcnItem(
         id,
-        ...metadata,
-        dependencies: normalizedDependencies,
+        metadata,
         files,
+        normalizedDependencies,
+        true,
+      )
+      const data = {
+        $schema: 'https://ui.shadcn.com/schema/registry-item.json',
+        ...shadcnItemForFile,
       }
 
       await fs.writeFile(
         path.join(REGISTRY_DIR, `${id}.json`),
         JSON.stringify(data, null, 2),
       )
-
-      byId[id] = data
 
       const publicItemDir = path.join(REGISTRY_DIR, id)
       await fs.mkdir(publicItemDir, { recursive: true })
@@ -163,33 +197,9 @@ async function main() {
         await fs.writeFile(path.join(publicItemDir, fileName), content)
       }
 
-      const shadcnItem: ShadcnRegistryItem = {
-        name: id,
-        type: 'registry:component',
-        title: metadata.title || toTitleCase(id),
-        description: metadata.description || `Reusable ${id} component.`,
-        files: Object.keys(files)
-          .filter((fileName) => fileName !== 'metadata.ts')
-          .sort((a, b) => a.localeCompare(b))
-          .map((fileName) => ({
-            path: `registry/${id}/${fileName}`,
-            type: getRegistryFileType(fileName),
-          })),
-      }
-
-      if (normalizedDependencies.external.length > 0) {
-        shadcnItem.dependencies = normalizedDependencies.external
-      }
-      if (normalizedDependencies.internal.length > 0) {
-        shadcnItem.registryDependencies = normalizedDependencies.internal
-      }
-
-      shadcnItems.push(shadcnItem)
-
-      const category = metadata.category || 'Uncategorized'
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      byCategory[category] = byCategory[category] || []
-      byCategory[category].push(id)
+      shadcnItems.push(
+        buildShadcnItem(id, metadata, files, normalizedDependencies),
+      )
     } catch (err) {
       if ((err as any).code === 'ENOENT') {
         console.warn(`Skipping ${id}, no metadata.ts`)
@@ -202,7 +212,7 @@ async function main() {
   const shadcnRegistry = {
     $schema: 'https://ui.shadcn.com/schema/registry.json',
     name: 'mahou-ui',
-    homepage: 'https://github.com/kevintakeda/mahou-ui',
+    homepage: 'https://mahou-ui.kevintakeda.com/',
     items: shadcnItems.sort((a, b) => a.name.localeCompare(b.name)),
   }
 

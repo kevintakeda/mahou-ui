@@ -1,21 +1,17 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "mahou-ui",
-  "homepage": "https://github.com/kevintakeda/mahou-ui",
+  "homepage": "https://mahou-ui.kevintakeda.com/",
   "items": [
     {
       "name": "decrypted-text",
-      "type": "registry:component",
+      "type": "registry:ui",
       "title": "Decrypted Text",
       "description": "Reusable decrypted-text component.",
       "files": [
         {
-          "path": "registry/decrypted-text/decrypted-text.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/decrypted-text/demo.tsx",
-          "type": "registry:component"
+          "path": "decrypted-text/decrypted-text.tsx",
+          "type": "registry:ui"
         }
       ],
       "dependencies": [
