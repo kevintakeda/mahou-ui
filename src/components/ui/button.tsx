@@ -12,7 +12,9 @@ const buttonVariants = cva(
         default:
           'gloss bg-[radial-gradient(circle_at_top_center,oklch(30.9%_0_0)_0%,oklch(27.9%_0_0)_70%)] shadow-[inset_0_0_1px_3px_rgba(255,255,255,0.04)] relative rounded-full border-transparent text-white transition-all duration-[200ms] active:duration-[20ms] focus-visible:ring-white/60',
         secondary:
-          'bg-black text-secondary-foreground aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
+          'bg-black text-secondary-foreground rounded-full aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
+        ghost:
+          'bg-transparent text-secondary-foreground rounded-full aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
       },
       size: {
         default:
@@ -20,10 +22,10 @@ const buttonVariants = cva(
         xs: "h-6 gap-1 px-2.5 text-xs has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3",
         sm: 'h-8 gap-1 px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
         lg: 'h-12 gap-1.5 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3',
-        icon: 'size-9 aspect-square',
+        icon: "size-10 aspect-square [&_svg:not([class*='size-'])]:size-5",
         'icon-xs': "size-6 aspect-square [&_svg:not([class*='size-'])]:size-3",
-        'icon-sm': 'size-8 aspect-square',
-        'icon-lg': 'size-10 aspect-square',
+        'icon-sm': "size-8 aspect-square [&_svg:not([class*='size-'])]:size-4",
+        'icon-lg': "size-14 aspect-square [&_svg:not([class*='size-'])]:size-5",
       },
     },
     defaultVariants: {

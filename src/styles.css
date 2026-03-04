@@ -162,7 +162,6 @@ code {
 }
 
 @layer components {
-
   .gloss {
     position: relative;
   }
@@ -185,6 +184,7 @@ code {
         transparent calc(var(--rotation) + 180deg - var(--spread)),
         rgba(255, 255, 255, 0.15) calc(var(--rotation) + 180deg),
         transparent calc(var(--rotation) + 180deg + var(--spread)));
+    pointer-events: none;
   }
 }
 

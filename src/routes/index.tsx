@@ -14,7 +14,7 @@ function App() {
 
   return (
     <Frame>
-      <div className="h-full p-20 bg-[radial-gradient(125%_205%_at_50%_10%,oklch(20.5%_0_124)_40%,oklch(26%_0.0194_124)_100%)] rounded-2xl relative overflow-clip">
+      <div className="h-full p-2 sm:p-10 md:p-20 bg-[radial-gradient(125%_205%_at_50%_10%,oklch(20.5%_0_124)_40%,oklch(26%_0.0194_124)_100%)] rounded-2xl relative overflow-clip">
         <div className="grid place-items-center h-full absolute inset-0">
           <BG className="w-full h-auto" />
         </div>
@@ -27,7 +27,7 @@ function App() {
         <div className="grid place-items-center h-full -mt-10 relative">
           <div className="text-center">
             <img
-              className="block m-auto"
+              className="block m-auto max-sm:px-8"
               src="/mahou.webp"
               width={300}
               height={207}
@@ -35,7 +35,7 @@ function App() {
             />
             <h1 className="mt-2 font-normal text-neutral-500">Mahou UI</h1>
             <Features />
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
               <div className="bg-neutral-950 shadow-[0_1px_1px_rgba(255,255,255,0.1)] inline-flex rounded-full p-1">
                 <Button size={'lg'} onClick={() => setMenuOpen(true)}>
                   Browse components
@@ -45,9 +45,6 @@ function App() {
           </div>
         </div>
       </div>
-      <Star
-        className={'absolute left-[calc(-12px+50%)] top-[calc(1rem-12px)]'}
-      />
     </Frame>
   )
 }
@@ -73,8 +70,8 @@ const Features = () => {
   ]
 
   return (
-    <div className="w-full max-w-6xl mx-auto py-8 px-4">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-0">
+    <div className="w-full md:max-w-6xl mx-auto py-8 px-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-0">
         {data.map((item, index) => {
           const Icon = item.icon
 
@@ -84,7 +81,7 @@ const Features = () => {
               className="relative flex flex-col items-center px-0 md:px-4 first:pl-0 last:pr-0"
             >
               {/* Icon & Content Stack */}
-              <div className="mb-4 shrink-0 text-white">
+              <div className="mb-2 sm:mb-4 shrink-0 text-white">
                 <Icon size={24} strokeWidth={1} />
               </div>
 
@@ -94,12 +91,7 @@ const Features = () => {
 
               {/* Vertical Divider (Hidden on mobile, hidden after last item) */}
               {index !== data.length - 1 && (
-                <div className="hidden md:block absolute right-0 top-3 bottom-3 w-px bg-white/10" />
-              )}
-
-              {/* Horizontal Divider (Mobile only) */}
-              {index !== data.length - 1 && (
-                <div className="block md:hidden w-full h-px bg-white/10 mt-4" />
+                <div className="hidden sm:block absolute right-0 top-3 bottom-3 w-px bg-white/10" />
               )}
             </div>
           )

@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react'
 import type { ComponentType } from 'react'
+import { cn } from '@/lib/utils'
 
 const spellModules = import.meta.glob<ComponentType>('/src/spells/*/demo.tsx', {
   import: 'default',
@@ -41,9 +42,7 @@ export function DynamicSpell({ spellId, className }: DynamicSpellProps) {
 
   return (
     <div
-      className={['h-full w-full flex items-center justify-center', className]
-        .filter(Boolean)
-        .join(' ')}
+      className={cn(['h-full w-full flex items-center justify-center', className])}
     >
       <Suspense
         fallback={

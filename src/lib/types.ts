@@ -1,10 +1,8 @@
-export interface SpellDependencies {
-  external?: Array<string>
-  internal?: Array<string>
-}
-
 export interface SpellMetadata {
-  dependencies?: SpellDependencies | Array<string>
+  dependencies?: Array<string>
+  devDependencies?: Array<string>
+  registryDependencies?: Array<string>
+  visible?: boolean
   center?: boolean
   title?: string
   description?: string

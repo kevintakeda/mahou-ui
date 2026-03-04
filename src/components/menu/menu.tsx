@@ -1,7 +1,9 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { Menu } from 'lucide-react'
+import { PanelLeft, PanelLeftClose } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
+import { useAtom } from 'jotai/react'
+import { isMenuOpenAtom } from '../atoms'
+import { Button } from '../ui/button'
 
 interface MenuDrawerProps {
   isOpen: boolean
@@ -65,9 +67,9 @@ export function MenuDrawer({ isOpen, onOpenChange }: MenuDrawerProps) {
                 duration: 0.2,
               },
             }}
-            className="fixed top-4 left-4 bottom-4 rounded-2xl bg-black w-80 shadow-2xl z-50 flex flex-col"
+            className="fixed inset-y-2 left-2 right-2 w-auto rounded-xl bg-neutral-900 shadow-2xl z-50 flex flex-col sm:top-4 sm:left-4 sm:bottom-4 sm:right-auto sm:w-80 sm:rounded-2xl"
           >
-            <div className="p-5 flex-1 overflow-y-auto scrollbar-hidden">
+            <div className="p-4 sm:p-5 flex-1 overflow-y-auto scrollbar-hidden">
               <MenuContent onSelect={() => onOpenChange(false)} />
             </div>
           </motion.div>
@@ -77,20 +79,30 @@ export function MenuDrawer({ isOpen, onOpenChange }: MenuDrawerProps) {
   )
 }
 
-interface MenuTriggerButtonProps {
-  onClick: () => void
-}
+export function MenuTriggerButton() {
+  const [isOpen, setOpen] = useAtom(isMenuOpenAtom)
 
-export function MenuTriggerButton({ onClick }: MenuTriggerButtonProps) {
   return (
-    <Button
-      variant="secondary"
-      size="icon-lg"
-      className="shadow-md rounded-xl"
-      onClick={onClick}
-    >
-      <Menu className="w-5 h-5" />
-    </Button>
+    <div className="absolute top-3 left-3 z-50 sm:top-6 sm:left-6">
+      <Button
+        variant="secondary"
+        size="icon"
+        className="shadow-md rounded-lg overflow-clip"
+        onClick={() => setOpen((prev) => !prev)}
+      >
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.div
+            key={isOpen ? 'open' : 'closed'}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.15 }}
+          >
+            {isOpen ? <PanelLeftClose /> : <PanelLeft />}
+          </motion.div>
+        </AnimatePresence>
+      </Button>
+    </div>
   )
 }
 
@@ -118,10 +130,23 @@ const item = {
   },
 } as const
 
+const linkClass =
+  'flex items-center py-1 px-3 w-full text-sm font-medium text-neutral-400 transition-colors hover:text-lime-200 data-[status=active]:text-lime-200'
+
 export function MenuContent({ onSelect }: { onSelect?: () => void }) {
   return (
-    <div className="flex flex-col gap-1 mt-20">
-      <div className="px-3 mb-4">
+    <div className="flex flex-col gap-1 mt-8 sm:mt-12">
+      <div className="mb-2 mt-4">
+        <h2 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+          Links
+        </h2>
+      </div>
+      <div>
+        <Link to="/" onClick={onSelect} className={linkClass}>
+          Home
+        </Link>
+      </div>
+      <div className="mb-2 mt-4">
         <h2 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
           Components
         </h2>
@@ -130,7 +155,7 @@ export function MenuContent({ onSelect }: { onSelect?: () => void }) {
         variants={container}
         initial="hidden"
         animate="show"
-        className="flex flex-col gap-1"
+        className="flex flex-col"
       >
         {spells.map((spell) => (
           <motion.div key={spell.id} variants={item}>
@@ -138,7 +163,7 @@ export function MenuContent({ onSelect }: { onSelect?: () => void }) {
               to="/ui/$id"
               params={{ id: spell.id }}
               onClick={onSelect}
-              className="flex items-center h-10 px-3 w-full text-sm font-medium text-neutral-400 transition-colors hover:text-white data-[status=active]:text-white"
+              className={linkClass}
             >
               {spell.title}
             </Link>

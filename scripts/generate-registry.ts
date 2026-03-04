@@ -12,11 +12,6 @@ const SHADCN_REGISTRY_FILE = path.resolve(
 )
 const SKETCHES_DIR = path.resolve(__dirname, '../src/spells')
 
-type NormalizedDependencies = {
-  external: Array<string>
-  internal: Array<string>
-}
-
 type ShadcnRegistryFileType =
   | 'registry:ui'
   | 'registry:hook'
@@ -28,7 +23,9 @@ type ShadcnRegistryItem = {
   type: 'registry:ui'
   title: string
   description: string
+  visible?: boolean
   dependencies?: Array<string>
+  devDependencies?: Array<string>
   registryDependencies?: Array<string>
   files: Array<{
     path: string
@@ -49,17 +46,6 @@ function isComponentSourceFile(file: string): boolean {
   if (file === 'demo.tsx' || file === 'demo.ts') return false
   if (file === 'metadata.ts') return false
   return /\.(tsx|ts|jsx|js)$/.test(file)
-}
-
-function normalizeDependencies(dependencies: any): NormalizedDependencies {
-  if (Array.isArray(dependencies)) {
-    return { external: dependencies, internal: [] }
-  }
-
-  return {
-    external: dependencies?.external || [],
-    internal: dependencies?.internal || [],
-  }
 }
 
 function getRegistryFileType(file: string): ShadcnRegistryFileType {
@@ -84,7 +70,6 @@ function buildShadcnItem(
   id: string,
   metadata: any,
   files: Record<string, string>,
-  normalizedDependencies: NormalizedDependencies,
   withInlineContent = false,
 ): ShadcnRegistryItem {
   const shadcnItem: ShadcnRegistryItem = {
@@ -102,11 +87,17 @@ function buildShadcnItem(
       })),
   }
 
-  if (normalizedDependencies.external.length > 0) {
-    shadcnItem.dependencies = normalizedDependencies.external
+  if (metadata.dependencies?.length > 0) {
+    shadcnItem.dependencies = metadata.dependencies
   }
-  if (normalizedDependencies.internal.length > 0) {
-    shadcnItem.registryDependencies = normalizedDependencies.internal
+  if (metadata.visible === false) {
+    shadcnItem.visible = false
+  }
+  if (metadata.devDependencies?.length > 0) {
+    shadcnItem.devDependencies = metadata.devDependencies
+  }
+  if (metadata.registryDependencies?.length > 0) {
+    shadcnItem.registryDependencies = metadata.registryDependencies
   }
 
   return shadcnItem
@@ -169,15 +160,10 @@ async function main() {
 
       console.log(`Processing ${id}...`)
 
-      const normalizedDependencies = normalizeDependencies(
-        metadata.dependencies,
-      )
-
       const shadcnItemForFile = buildShadcnItem(
         id,
         metadata,
         files,
-        normalizedDependencies,
         true,
       )
       const data = {
@@ -197,9 +183,7 @@ async function main() {
         await fs.writeFile(path.join(publicItemDir, fileName), content)
       }
 
-      shadcnItems.push(
-        buildShadcnItem(id, metadata, files, normalizedDependencies),
-      )
+      shadcnItems.push(buildShadcnItem(id, metadata, files))
     } catch (err) {
       if ((err as any).code === 'ENOENT') {
         console.warn(`Skipping ${id}, no metadata.ts`)

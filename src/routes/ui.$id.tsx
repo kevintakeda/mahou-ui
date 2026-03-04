@@ -1,15 +1,13 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { motion } from 'motion/react'
-import { Tabs } from '@base-ui/react/tabs'
-import { RefreshCw } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useAtomValue } from 'jotai'
+import { Toolbar } from '../components/toolbar'
 import type { Spell } from '@/lib/types'
 import { isDocsVisibleAtom } from '@/components/atoms'
 import { getSpell } from '@/lib/registry'
 import { DynamicSpell } from '@/components/spell'
-import { CodeBlock } from '@/components/docs/code-block'
-import { CliCommandSpell } from '@/components/docs/cli-command-spell'
+import { SpellDocsTabs } from '@/components/docs/spell-docs-tabs'
 import { Button } from '@/components/ui/button'
 import { useMediaQuery } from '@/lib/hooks'
 
@@ -80,33 +78,18 @@ function buildUsageSpell(sourceFile: string) {
   ].join('\n')
 }
 
-function normalizeDependencies(dependencies: Spell['dependencies']): {
-  external: Array<string>
-  internal: Array<string>
-} {
-  if (!dependencies) return { external: [], internal: [] }
-  if (Array.isArray(dependencies)) {
-    return { external: dependencies, internal: [] }
-  }
-  return {
-    external: dependencies.external || [],
-    internal: dependencies.internal || [],
-  }
-}
-
 function SpellDocsLayout({ spell }: { spell: Spell }) {
-  const isSmall = useMediaQuery('(max-width: 768px)')
   const [previewReloadKey, setPreviewReloadKey] = useState(0)
   const isDocsVisible = useAtomValue(isDocsVisibleAtom)
+  const isDesktop = useMediaQuery('(min-width: 768px)')
+  const showDocs = isDesktop && isDocsVisible
 
   const sourceFile = useMemo(
     () => getPrimarySourceFile(spell.files),
     [spell.files],
   )
-  const dependencyInfo = useMemo(
-    () => normalizeDependencies(spell.dependencies),
-    [spell.dependencies],
-  )
+  const dependencies = spell.dependencies || []
+  const registryDependencies = spell.registryDependencies || []
 
   const usageCode = useMemo(
     () =>
@@ -116,38 +99,36 @@ function SpellDocsLayout({ spell }: { spell: Spell }) {
     [sourceFile],
   )
   const sourceCode = sourceFile ? spell.files[sourceFile] || '' : ''
+  const sources = [
+    {
+      sourceCode,
+      sourceTitle: sourceFile ? `Source (${sourceFile})` : 'Source',
+      sourceLang: getLanguageFromFileName(sourceFile || 'source.tsx'),
+    },
+  ]
   const installCommand = `shadcn@latest add https://mahou-ui.kevintakeda.com/r/${spell.id}.json`
-  const docsPanelWidth = isSmall ? 320 : 460
-  const previewShift = docsPanelWidth + 8
-  const handlePreviewReload = () => setPreviewReloadKey((prev) => prev + 1)
+  const handleReload = () => setPreviewReloadKey((prev) => prev + 1)
+  const docsWidth = '45vw'
+  const previewLeft = showDocs ? '45vw' : 0
+  const docsClosedX = -24
+  const docsScale = showDocs ? 1 : 0.985
+  const panelSpring = { type: 'spring' as const, stiffness: 340, damping: 34 }
 
   return (
     <div className="relative h-dvh w-screen bg-neutral-950 text-neutral-200">
-      <div className="absolute top-6 right-6 z-30">
-        <Button
-          size="icon-lg"
-          variant="secondary"
-          className="shadow-md rounded-xl"
-          aria-label="Reload component preview"
-          onClick={handlePreviewReload}
-        >
-          <RefreshCw className="size-5" />
-        </Button>
-      </div>
-
       <div className="h-full w-full p-2">
         <div className="relative h-full w-full min-h-0 min-w-0 overflow-hidden">
           <motion.section
             initial={false}
             animate={{
-              opacity: isDocsVisible ? 1 : 0,
-              x: isDocsVisible ? 0 : -24,
-              scale: isDocsVisible ? 1 : 0.985,
+              opacity: showDocs ? 1 : 0,
+              x: showDocs ? 0 : docsClosedX,
+              scale: docsScale,
             }}
-            transition={{ type: 'spring', stiffness: 340, damping: 34 }}
-            className="absolute inset-y-0 left-0 z-10 overflow-hidden"
+            transition={panelSpring}
+            className="absolute inset-y-0 left-0 z-10 hidden overflow-hidden md:block"
             style={{
-              width: docsPanelWidth,
+              width: docsWidth,
               pointerEvents: isDocsVisible ? 'auto' : 'none',
             }}
           >
@@ -162,99 +143,30 @@ function SpellDocsLayout({ spell }: { spell: Spell }) {
                 {spell.description ||
                   `Reusable ${spell.id} component with copy-paste source.`}
               </p>
-
-              <Tabs.Root className="mt-5" defaultValue="cli">
-                <Tabs.List className="relative z-0 flex gap-1 p-0">
-                  <Tabs.Tab
-                    value="cli"
-                    className="relative z-10 flex h-7 cursor-pointer items-center justify-center rounded-md border-0 px-3 text-xs font-medium whitespace-nowrap text-neutral-400 outline-none transition-colors select-none hover:text-neutral-200 focus-visible:ring-2 focus-visible:ring-neutral-500 data-[active]:text-neutral-100"
-                  >
-                    CLI
-                  </Tabs.Tab>
-                  <Tabs.Tab
-                    value="manual"
-                    className="relative z-10 flex h-7 cursor-pointer items-center justify-center rounded-md border-0 px-3 text-xs font-medium whitespace-nowrap text-neutral-400 outline-none transition-colors select-none hover:text-neutral-200 focus-visible:ring-2 focus-visible:ring-neutral-500 data-[active]:text-neutral-100"
-                  >
-                    Manual
-                  </Tabs.Tab>
-                  <Tabs.Indicator className="absolute inset-y-0 left-0 z-0 w-[--active-tab-width] translate-x-[--active-tab-left] rounded-md bg-neutral-800 transition-all duration-200 ease-in-out" />
-                </Tabs.List>
-
-                <Tabs.Panel value="cli" className="mt-6 space-y-6">
-                  <CliCommandSpell
-                    command={installCommand}
-                    title="Installation"
-                    npx
-                  />
-                  <CodeBlock title="Usage" code={usageCode} lang="tsx" />
-                </Tabs.Panel>
-
-                <Tabs.Panel value="manual" className="mt-6 space-y-4">
-                  {(dependencyInfo.external.length > 0 ||
-                    dependencyInfo.internal.length > 0) && (
-                    <div className="space-y-2">
-                      {dependencyInfo.external.length > 0 && (
-                        <div className="space-y-1">
-                          <p className="text-xs text-neutral-400">
-                            External dependencies
-                          </p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {dependencyInfo.external.map((dep) => (
-                              <span
-                                key={dep}
-                                className="rounded-md border border-neutral-700 px-2 py-0.5 text-xs text-neutral-300"
-                              >
-                                {dep}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      {dependencyInfo.internal.length > 0 && (
-                        <div className="space-y-1">
-                          <p className="text-xs text-neutral-400">
-                            Internal dependencies
-                          </p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {dependencyInfo.internal.map((dep) => (
-                              <span
-                                key={dep}
-                                className="rounded-md border border-neutral-700 px-2 py-0.5 text-xs text-neutral-300"
-                              >
-                                {dep}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  <CodeBlock title="Usage" code={usageCode} lang="tsx" />
-                  <CodeBlock
-                    title={sourceFile ? `Source (${sourceFile})` : 'Source'}
-                    code={sourceCode}
-                    lang={getLanguageFromFileName(sourceFile || 'source.tsx')}
-                  />
-                </Tabs.Panel>
-              </Tabs.Root>
+              <SpellDocsTabs
+                installCommand={installCommand}
+                usageCode={usageCode}
+                sources={sources}
+                dependencies={dependencies}
+                registryDependencies={registryDependencies}
+              />
             </div>
           </motion.section>
 
           <motion.div
             initial={false}
-            animate={{ left: isDocsVisible ? previewShift : 0 }}
-            transition={{ type: 'spring', stiffness: 340, damping: 34 }}
+            animate={{ left: previewLeft }}
+            transition={panelSpring}
             className="absolute inset-y-0 right-0 z-20"
             style={{ pointerEvents: 'auto' }}
           >
-            <div className="h-full min-h-0 min-w-0 rounded-2xl bg-neutral-900">
-              <div className="h-full w-full min-h-0 min-w-0 flex items-center justify-center p-8">
-                <DynamicSpell
-                  key={`${spell.id}-${previewReloadKey}`}
-                  spellId={spell.id}
-                  className="h-full w-full"
-                />
-              </div>
+            <div className="h-full min-h-0 min-w-0 rounded-2xl bg-neutral-900 relative">
+              <Toolbar onReload={handleReload} />
+              <DynamicSpell
+                key={`${spell.id}-${previewReloadKey}`}
+                spellId={spell.id}
+                className="h-full w-full"
+              />
             </div>
           </motion.div>
         </div>

@@ -15,7 +15,7 @@ const fileModules = import.meta.glob<string>(
   },
 )
 
-const spells: Record<string, Spell> = {}
+const spells: Partial<Record<string, Spell>> = {}
 
 // Process metadata and files into Spell objects
 for (const [path, metadata] of Object.entries(metadataModules)) {
@@ -41,9 +41,13 @@ for (const [path, metadata] of Object.entries(metadataModules)) {
 }
 
 export function getSpell(id: string): Spell | null {
-  return spells[id]
+  const spell = spells[id]
+  if (!spell || spell.visible === false) return null
+  return spell
 }
 
 export function getAllSpellIds(): Array<string> {
-  return Object.keys(spells)
+  return Object.values(spells)
+    .filter((spell) => spell && spell.visible !== false)
+    .map((spell) => spell!.id)
 }
